@@ -15,15 +15,19 @@ class Player {
     if (keys["ArrowRight"]) this.x += this.speed;
   }
 
-  dig() {
-    if (this.cooldown > 0) return;
-    const dug = dig(this.x + this.size / 2, this.y + this.size / 2);
-    if (dug) {
-      this.score++;
-      document.getElementById("score").textContent = this.score;
-      this.cooldown = 20; // frames
-    }
+dig() {
+  if (this.cooldown > 0) return;
+
+  const centerX = this.x + this.size / 2;
+  const centerY = this.y + this.size / 2;
+  const dug = dig(centerX, centerY);
+
+  if (dug) {
+    this.score++;
+    document.getElementById("score").textContent = this.score;
+    this.cooldown = 20; // prevent spamming
   }
+}
 
   update(keys) {
     this.move(keys);
