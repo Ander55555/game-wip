@@ -1,15 +1,22 @@
+// game.js
+
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
-let keys = {};
-let player = new Player(100, 100);
+const keys = {};
+let localPlayer;
 
-generateTerrain();
-
+// Key listeners
 document.addEventListener("keydown", e => keys[e.key] = true);
 document.addEventListener("keyup", e => keys[e.key] = false);
 
+// Game loop
 function gameLoop() {
+  if (!localPlayer) {
+    console.warn("localPlayer not initialized yet");
+    return requestAnimationFrame(gameLoop);
+  }
+
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawTerrain(ctx);
 
@@ -19,4 +26,8 @@ function gameLoop() {
   requestAnimationFrame(gameLoop);
 }
 
-gameLoop();
+// Initialize game after everything loads
+window.onload = () => {
+  localPlayer = new Player(100, 100); // Adjust spawn point as needed
+  gameLoop();
+};
