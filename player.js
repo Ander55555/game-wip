@@ -1,46 +1,42 @@
+// player.js
+
 class Player {
   constructor(x, y) {
     this.x = x;
     this.y = y;
-    this.size = TILE_SIZE;
+    this.size = 32;
     this.speed = 2;
     this.score = 0;
     this.cooldown = 0;
   }
 
-  move(keys) {
+  update(keys) {
     if (keys["ArrowUp"]) this.y -= this.speed;
     if (keys["ArrowDown"]) this.y += this.speed;
     if (keys["ArrowLeft"]) this.x -= this.speed;
     if (keys["ArrowRight"]) this.x += this.speed;
-  }
 
-dig() {
-  if (this.cooldown > 0) return;
+    if (keys[" "] && this.cooldown === 0) {
+      this.dig();
+    }
 
-  const centerX = this.x + this.size / 2;
-  const centerY = this.y + this.size / 2;
-  const dug = dig(centerX, centerY);
-
-  if (dug) {
-    this.score++;
-    document.getElementById("score").textContent = this.score;
-    this.cooldown = 20; // prevent spamming
-  }
-}
-
-  update(keys) {
-    this.move(keys);
-    if (keys[" "]) this.dig();
     if (this.cooldown > 0) this.cooldown--;
   }
 
   draw(ctx) {
-    ctx.fillStyle = "cyan";
-    ctx.beginPath();
-    ctx.arc(this.x + this.size / 2, this.y + this.size / 2, this.size / 2, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.shadowColor = "black";
-    ctx.shadowBlur = 10;
+    ctx.fillStyle = "blue";
+    ctx.fillRect(this.x, this.y, this.size, this.size);
+  }
+
+  dig() {
+    const centerX = this.x + this.size / 2;
+    const centerY = this.y + this.size / 2;
+    const dug = dig(centerX, centerY);
+
+    if (dug) {
+      this.score++;
+      document.getElementById("score").textContent = this.score;
+      this.cooldown = 20;
+    }
   }
 }
