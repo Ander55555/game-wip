@@ -6,7 +6,7 @@ let terrain = [];
 
 function generateTerrain() {
   terrain = Array.from({ length: ROWS }, () =>
-    Array.from({ length: COLS }, () => 1) // 1 = solid, 0 = dug
+    Array.from({ length: COLS }, () => 1)
   );
 }
 
@@ -26,5 +26,7 @@ function dig(x, y) {
   const row = Math.floor(y / TILE_SIZE);
   if (terrain[row] && terrain[row][col] === 1) {
     terrain[row][col] = 0;
+    return true;
   }
+  return false;
 }
