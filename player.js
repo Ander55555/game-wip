@@ -2,7 +2,10 @@ class Player {
   constructor(x, y) {
     this.x = x;
     this.y = y;
+    this.size = TILE_SIZE;
     this.speed = 2;
+    this.score = 0;
+    this.cooldown = 0;
   }
 
   move(keys) {
@@ -12,12 +15,28 @@ class Player {
     if (keys["ArrowRight"]) this.x += this.speed;
   }
 
-  draw(ctx) {
-    ctx.fillStyle = "cyan";
-    ctx.fillRect(this.x, this.y, TILE_SIZE, TILE_SIZE);
+  dig() {
+    if (this.cooldown > 0) return;
+    const dug = dig(this.x + this.size / 2, this.y + this.size / 2);
+    if (dug) {
+      this.score++;
+      document.getElementById("score").textContent = this.score;
+      this.cooldown = 20; // frames
+    }
   }
 
-  dig() {
-    dig(this.x + TILE_SIZE / 2, this.y + TILE_SIZE / 2);
+  update(keys) {
+    this.move(keys);
+    if (keys[" "]) this.dig();
+    if (this.cooldown > 0) this.cooldown--;
+  }
+
+  draw(ctx) {
+    ctx.fillStyle = "cyan";
+    ctx.beginPath();
+    ctx.arc(this.x + this.size / 2, this.y + this.size / 2, this.size / 2, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.shadowColor = "black";
+    ctx.shadowBlur = 10;
   }
 }
