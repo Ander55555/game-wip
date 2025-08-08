@@ -1,21 +1,28 @@
-const TILE_SIZE = 20;
-const ROWS = 30;
-const COLS = 40;
+// terrain.js
 
+const TILE_SIZE = 32;
+const ROWS = 20;
+const COLS = 25;
 let terrain = [];
 
 function generateTerrain() {
-  terrain = Array.from({ length: ROWS }, () =>
-    Array.from({ length: COLS }, () => 1)
-  );
+  terrain = [];
+  for (let row = 0; row < ROWS; row++) {
+    terrain[row] = [];
+    for (let col = 0; col < COLS; col++) {
+      terrain[row][col] = Math.random() < 0.3 ? 1 : 0;
+    }
+  }
 }
 
 function drawTerrain(ctx) {
-  for (let y = 0; y < ROWS; y++) {
-    for (let x = 0; x < COLS; x++) {
-      if (terrain[y][x] === 1) {
-        ctx.fillStyle = "#654321";
-        ctx.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+  if (!terrain || terrain.length === 0) return;
+
+  for (let row = 0; row < terrain.length; row++) {
+    for (let col = 0; col < terrain[row].length; col++) {
+      if (terrain[row][col] === 1) {
+        ctx.fillStyle = "brown";
+        ctx.fillRect(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
       }
     }
   }
