@@ -12,8 +12,7 @@ document.addEventListener("keyup", e => keys[e.key] = false);
 function gameLoop() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawTerrain(ctx);
-  player.move(keys);
-  if (keys[" "]) player.dig();
+  player.update(keys);
   player.draw(ctx);
   requestAnimationFrame(gameLoop);
 }
